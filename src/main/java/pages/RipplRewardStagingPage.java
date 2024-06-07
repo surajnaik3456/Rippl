@@ -88,8 +88,22 @@ public class RipplRewardStagingPage extends TestBase{
 	@FindBy(xpath="//h1[text()='Tasks']")
 	WebElement taskPage;
 	
+	@FindBy(xpath="//p[text()='Community']")
+	WebElement community;
+	
+	@FindBy(xpath="//h1[contains(text(),'Community')]")
+	WebElement communityPage;
+	
+	
 	@FindBy(xpath="//button[contains(text(),'Completed Tasks')]")
 	WebElement completedTaskTab;
+	
+	@FindBy(xpath="//button[normalize-space()='# Action']")
+	WebElement tagInCommunitySection;
+	
+	@FindBy(xpath="(//div[@class=' css-1xc3v61-indicatorContainer'])[2]")
+	WebElement tagsBtn;
+	
 	public boolean verifyHomepage()
 	{
 		return homepageLogo.isDisplayed();
@@ -162,6 +176,7 @@ public class RipplRewardStagingPage extends TestBase{
 		filterByTagsDropdown.click();
 		driver.findElement(By.xpath("//div[contains(text(),'"+filterByTags+"')]")).click();
 	}
+	
 	public void selectIconType(String iconType)
 	{
 		driver.findElement(By.xpath("//span[text()='"+iconType+"']")).click();
@@ -185,6 +200,11 @@ public class RipplRewardStagingPage extends TestBase{
 	public void enterPoints(String points)
 	{
 		pointsField.sendKeys(points);
+	}
+	public void selectTags(String tags)
+	{
+		tagsBtn.click();
+		driver.findElement(By.xpath("//div[text()='"+tags+"']")).click();
 	}
 	public void enterGallonsOfWater(String gallonsOfWater)
 	{
@@ -217,5 +237,13 @@ public class RipplRewardStagingPage extends TestBase{
 		taskPage.isDisplayed();
 		completedTaskTab.click();
 		return driver.findElement(By.xpath("//div[@data-field='taskDescription']/p[contains(text(),'"+corelatedTask+"')]")).isDisplayed();
+	}
+	public boolean verifyTagsAdded(String tags,String name )
+	{
+		homePg.clickHamburgerIcon();
+		community.click();
+		communityPage.isDisplayed();
+		driver.findElement(By.xpath("//p[contains(text(),'"+name+"')]/following::div[3]")).click();
+		return driver.findElement(By.xpath("//button[normalize-space()='"+tags+"']")).isDisplayed();
 	}
 }

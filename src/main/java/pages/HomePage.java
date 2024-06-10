@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -73,7 +74,13 @@ public class HomePage extends TestBase{
 	}
 	public boolean verifyRipplRewardStagingPage(String ripplRewardsStaging)
 	{
-		return ripplRewardStagePage.isDisplayed();
+		try {
+		return wait.until(ExpectedConditions.elementToBeClickable(ripplRewardStagePage)).isDisplayed();
+		}
+		catch(StaleElementReferenceException s)
+		{
+			return wait.until(ExpectedConditions.elementToBeClickable(ripplRewardStagePage)).isDisplayed();	
+		}
 	}
 	public void clickHamburgerIcon()
 	{

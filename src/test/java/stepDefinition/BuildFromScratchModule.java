@@ -53,7 +53,7 @@ public class BuildFromScratchModule {
 		homePg.basicInfoPgDisplayed();
 	}
 	
-	@Then("^User fills (.*),(.*),(.*),(.*) and (.*) the parameters$")
+	@Then("User fills {string},{string},{string},{string} and {string} the parameters")
 	public void user_fills_in_all_the_parameters(String name,String shortDescription,String actionDescription,String startDate,String endDate) {
 		rewardPg.enterName(name);
 		rewardPg.enterShortDescription(shortDescription);
@@ -91,15 +91,17 @@ public class BuildFromScratchModule {
 	}
 	@Then("User clicks on publish button")
 	public void user_clicks_on_publish_button() {
-		rewardPg.clickpublishBtnd();
+		//rewardPg.clickpublishBtnd();
 	}
-	@Then ("Verify all the details are updated accordingly")
+	@Then ("^Verify all the details (.*),(.*),(.*) and (.*) are updated accordingly$")
 	public void verify_actions_created(String name, String points, String corelatedTask, String tags) {
 		Assert.assertTrue(rewardPg.verifyPublishedName(name));
 		Assert.assertTrue(rewardPg.verifyPublishedPoints(name, points));
 		Assert.assertTrue(rewardPg.verifyCorrelatedInTaskSection(corelatedTask));
 		Assert.assertTrue(rewardPg.verifyTagsAdded(tags, name));
 	}
+
+
 
 
 

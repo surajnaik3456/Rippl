@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -55,28 +56,28 @@ public class RipplRewardStagingPage extends TestBase{
 	@FindBy(css="input[type=file][name=image]")
 	WebElement uploadBannerImgBtn;
 	
-	@FindBy(css="input[id=':rb:']")
+	@FindBy(xpath="(//input[@class='MuiInputBase-input MuiFilledInput-input MuiInputBase-inputSizeSmall css-7ulcqb'])[9]")
 	WebElement optionalMailField;
 	
 	@FindBy(css="div.ql-editor.ql-blank")
 	WebElement contentField;
 	
-	@FindBy(xpath="//input[@id=':ra:']")
+	@FindBy(xpath="(//input[@class='MuiInputBase-input MuiFilledInput-input MuiInputBase-inputSizeSmall css-7ulcqb' and @type='number'])[1]")
 	WebElement pointsField;
 	
-	@FindBy(xpath="//input[@id=':ra:']/following::input[1]")
+	@FindBy(xpath="(//input[@class='MuiInputBase-input MuiFilledInput-input MuiInputBase-inputSizeSmall css-7ulcqb' and @type='number'])[2]")
 	WebElement gallonsOfWaterField;
 	
-	@FindBy(xpath="//input[@id=':ra:']/following::input[2]")
+	@FindBy(xpath="(//input[@class='MuiInputBase-input MuiFilledInput-input MuiInputBase-inputSizeSmall css-7ulcqb' and @type='number'])[3]")
 	WebElement kgsOfPlasticField;
 	
-	@FindBy(xpath="//input[@id=':rc:' and @type='text']")
+	@FindBy(xpath="(//input[@class='MuiInputBase-input MuiFilledInput-input MuiInputBase-inputSizeSmall css-7ulcqb'])[10]")
 	WebElement corelatedTaskField;
 	
-	@FindBy(xpath="//input[@id=':ra:']/following::input[3]")
+	@FindBy(xpath="(//input[@class='MuiInputBase-input MuiFilledInput-input MuiInputBase-inputSizeSmall css-7ulcqb' and @type='number'])[4]")
 	WebElement treesPlantedField;
 	
-	@FindBy(xpath="//button[text()='Publish' and @type='submit']")
+	@FindBy(xpath="(//button[@type='submit'][normalize-space()='Publish'])[1]")
 	WebElement publishBtn;
 	
 	@FindBy(xpath="//p[contains(text(), 'Program')]")
@@ -94,7 +95,6 @@ public class RipplRewardStagingPage extends TestBase{
 	@FindBy(xpath="//h1[contains(text(),'Community')]")
 	WebElement communityPage;
 	
-	
 	@FindBy(xpath="//button[contains(text(),'Completed Tasks')]")
 	WebElement completedTaskTab;
 	
@@ -104,6 +104,9 @@ public class RipplRewardStagingPage extends TestBase{
 	@FindBy(xpath="(//div[@class=' css-1xc3v61-indicatorContainer'])[2]")
 	WebElement tagsBtn;
 	
+	@FindBy(xpath="//button[text()='Crop']")
+	WebElement cropBtn;
+	
 	public boolean verifyHomepage()
 	{
 		return homepageLogo.isDisplayed();
@@ -112,7 +115,8 @@ public class RipplRewardStagingPage extends TestBase{
 	{
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("app-iframe");
-		nameField.sendKeys(name);
+		wait.until(ExpectedConditions.elementToBeClickable(nameField)).sendKeys(name);
+		
 //		Actions action=new Actions(driver);
 //		action.sendKeys(nameField, name);
 //		action.click(nameField);
@@ -131,19 +135,15 @@ public class RipplRewardStagingPage extends TestBase{
 	}
 	public void enterStartDate(String startDate)
 	{
-		action.moveToElement(startDateField).click();
-		startDateField.sendKeys(startDate);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(startDateField)).sendKeys(startDate);
+		startDateField.sendKeys(Keys.ENTER);
+		
 	}
 	public void enterEndDate(String endDate)
 	{
-		action.moveToElement(endDateField).click();
-//		try {
-//			Thread.sleep(3000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		endDateField.sendKeys(endDate);
+		wait.until(ExpectedConditions.elementToBeClickable(endDateField)).sendKeys(endDate);
+		endDateField.sendKeys(Keys.ENTER);
 	}
 	public void actionRepeatRadioBtnClick(String actionRepeatable)
 	{
@@ -157,7 +157,13 @@ public class RipplRewardStagingPage extends TestBase{
 	public void selectTrackingType(String trackingType)
 	{
 		//driver.findElement(By.xpath("//span[contains(text(), '"+trackingType+"')]")).click();
-		TrackingTypeRadioBtn.click();
+		try {
+		wait.until(ExpectedConditions.elementToBeClickable(TrackingTypeRadioBtn)).click();
+		}
+		catch(ElementClickInterceptedException e)
+		{
+			TrackingTypeRadioBtn.click();
+		}
 	}
 	public void selectImageTrackingType(String imageTrackingType)
 	{
@@ -180,14 +186,16 @@ public class RipplRewardStagingPage extends TestBase{
 	public void selectIconType(String iconType)
 	{
 		driver.findElement(By.xpath("//span[text()='"+iconType+"']")).click();
+		
 	}
 	public void uploadBannerImg()
 	{
 		uploadBannerImgBtn.sendKeys(System.getProperty("user.dir")+"\\images\\banner.jpg");
+		cropBtn.click();
 	}
 	public void enterOptionalMail(String optionalMail)
 	{
-		optionalMailField.sendKeys(optionalMail);
+	  wait.until(ExpectedConditions.elementToBeClickable(optionalMailField)).sendKeys(optionalMail);
 	}
 	public void enterContent(String content)
 	{
@@ -216,11 +224,17 @@ public class RipplRewardStagingPage extends TestBase{
 	}
 	public void enterTreesPlanted(String treesPlanted)
 	{
-		treesPlantedField.sendKeys(treesPlanted);
+		wait.until(ExpectedConditions.elementToBeClickable(treesPlantedField)).sendKeys(treesPlanted);
 	}
 	public void clickpublishBtnd()
 	{
-		publishBtn.click();
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(publishBtn)).click();
+		}
+		catch(ElementClickInterceptedException e)
+		{
+			publishBtn.click();	
+		}
 	}
 	public boolean verifyPublishedName(String name)
 	{

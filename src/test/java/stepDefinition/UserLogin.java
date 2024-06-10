@@ -1,6 +1,7 @@
 package stepDefinition;
 
 import org.junit.Assert;
+import org.openqa.selenium.StaleElementReferenceException;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -45,8 +46,13 @@ public class UserLogin {
 
 	@When("^User enters the valid (.*)$")
 	public void user_enters_the_valid_password(String password) {
-		
+		try {
 		loginPg.enterPwd(password);
+		}
+		catch(StaleElementReferenceException e)
+		{
+			loginPg.enterPwd(password);	
+		}
 	}
 
 	@When("User clicks on the Log in button")

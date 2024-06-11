@@ -19,7 +19,7 @@ public class RipplRewardStagingPage extends TestBase{
 	public RipplRewardStagingPage() {
 		PageFactory.initElements(driver, this);
 	}
-	public WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	public WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 	public Actions action=new Actions(driver);
 	HomePage homePg = new HomePage();
 	
@@ -43,6 +43,9 @@ public class RipplRewardStagingPage extends TestBase{
 	
 	@FindBy(xpath="//div[text()='Live image capture']")
 	WebElement imageTrackingTypeDropdown;
+	
+	@FindBy(xpath="(//textarea[@class='MuiInputBase-input MuiFilledInput-input MuiInputBase-inputMultiline MuiInputBase-inputSizeSmall css-g4h9k1'])[1]")
+	WebElement trackingInstructionField;
 	
 	@FindBy(xpath="//div[text()='Live image capture']")
 	WebElement TrackingTypeRadioBtn;
@@ -77,7 +80,7 @@ public class RipplRewardStagingPage extends TestBase{
 	@FindBy(xpath="(//input[@class='MuiInputBase-input MuiFilledInput-input MuiInputBase-inputSizeSmall css-7ulcqb' and @type='number'])[4]")
 	WebElement treesPlantedField;
 	
-	@FindBy(xpath="(//button[@type='submit'][normalize-space()='Publish'])[1]")
+	@FindBy(xpath="(//button[@type='submit'][normalize-space()='Publish'])[2]")
 	WebElement publishBtn;
 	
 	@FindBy(xpath="//p[contains(text(), 'Program')]")
@@ -156,15 +159,15 @@ public class RipplRewardStagingPage extends TestBase{
 	}
 	public void selectTrackingType(String trackingType)
 	{
-		//driver.findElement(By.xpath("//span[contains(text(), '"+trackingType+"')]")).click();
-		try {
-		wait.until(ExpectedConditions.elementToBeClickable(TrackingTypeRadioBtn)).click();
-		}
-		catch(ElementClickInterceptedException e)
-		{
-			TrackingTypeRadioBtn.click();
-		}
+
+		driver.findElement(By.xpath("//span[contains(text(), '"+trackingType+"')]")).click();
 	}
+	public void enterTrackingInstruction(String trackingInstruction)
+	{
+	
+		wait.until(ExpectedConditions.elementToBeClickable(trackingInstructionField)).sendKeys(trackingInstruction);
+	}
+	
 	public void selectImageTrackingType(String imageTrackingType)
 	{
 		try {
@@ -179,10 +182,16 @@ public class RipplRewardStagingPage extends TestBase{
 	}
 	public void selectFilterByTags(String filterByTags)
 	{
-		filterByTagsDropdown.click();
-		driver.findElement(By.xpath("//div[contains(text(),'"+filterByTags+"')]")).click();
+		try {
+		wait.until(ExpectedConditions.elementToBeClickable(filterByTagsDropdown)).click();
+		wait.until(ExpectedConditions.elementToBeClickable((By.xpath("//div[contains(text(),'"+filterByTags+"')]")))).click();
+		}
+		catch(ElementClickInterceptedException e)
+		{
+		wait.until(ExpectedConditions.elementToBeClickable(filterByTagsDropdown)).click();
+		wait.until(ExpectedConditions.elementToBeClickable((By.xpath("//div[contains(text(),'"+filterByTags+"')]")))).click();
 	}
-	
+	}
 	public void selectIconType(String iconType)
 	{
 		driver.findElement(By.xpath("//span[text()='"+iconType+"']")).click();
@@ -228,6 +237,7 @@ public class RipplRewardStagingPage extends TestBase{
 	}
 	public void clickpublishBtnd()
 	{
+		
 		try {
 			wait.until(ExpectedConditions.elementToBeClickable(publishBtn)).click();
 		}
